@@ -26,6 +26,7 @@
     "babel-plugin-transform-inline-environment-variables": "^0.4.3",
     "compression": "^1.7.3",
     "dotenv": "^8.0.0",
+    "feathers-hooks-common": "^4.20.7",
     "feathers-memory": "^3.0.2",
     "helmet": "^3.18.0",
     "nanoid": "^2.0.3",
