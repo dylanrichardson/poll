@@ -1,5 +1,5 @@
 const { disallow } = require('feathers-hooks-common');
-const { Conflict } = require('@feathersjs/errors');
+const { Conflict, BadRequest } = require('@feathersjs/errors');
 const generate = require('nanoid/generate');
 
 const addId = async context => {
@@ -10,6 +10,18 @@ const addId = async context => {
 
 const addEmptyMembers = async context => {
   Object.assign(context.data, { members: [] });
+
+  return context;
+};
+
+const addEmptyQuestion = async context => {
+  Object.assign(context.data, { question: '' });
+
+  return context;
+};
+
+const addEmptyAnswers = async context => {
+  Object.assign(context.data, { answers: [] });
 
   return context;
 };
@@ -73,10 +85,51 @@ const leavePoll = async context => {
   return context;
 };
 
+const addQuestion = async context => {
+  const {
+    data: { operation, question }
+  } = context;
+
+  if (operation === 'ask') {
+    // TODO restrict to leader
+    if (!question) {
+      throw new BadRequest('Ask operation requires a question.');
+    }
+
+    context.data = { question };
+  }
+
+  return context;
+};
+
+const addAnswer = async context => {
+  const {
+    id,
+    data: { operation, name, answer },
+    service
+  } = context;
+
+  if (operation === 'answer') {
+    if (!name) {
+      throw new BadRequest('Answer operation requires a name.');
+    }
+
+    if (!answer) {
+      throw new BadRequest('Answer operation requires an answer.');
+    }
+
+    const { answers } = await service.get(id);
+
+    context.data = { answers: { ...answers, [name]: answer } };
+  }
+
+  return context;
+};
+
 const removePoll = async context => {
   const {
     id,
-    data: { members },
+    result: { members },
     service
   } = context;
 
@@ -92,9 +145,9 @@ module.exports = {
     all: [], //[disallow('rest')],
     find: [], //[disallow('external')],
     get: [],
-    create: [addId, addEmptyMembers],
+    create: [addId, addEmptyMembers, addEmptyQuestion, addEmptyAnswers],
     update: [disallow('external')],
-    patch: [joinPoll, leavePoll],
+    patch: [joinPoll, leavePoll, addQuestion, addAnswer],
     remove: [disallow('external')]
   },
 

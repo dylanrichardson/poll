@@ -4,7 +4,7 @@ import Router from 'next/router';
 
 const poll = client.service('poll');
 
-export const JoinPoll = class extends Component {
+export const Join = class extends Component {
   state = {
     error: null
   };

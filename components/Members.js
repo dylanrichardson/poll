@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const MemberList = ({ leader, members }) => {
+export const Members = ({ leader, members }) => {
   return (
     <ul>
       {members.map(member => (

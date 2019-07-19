@@ -1,12 +1,14 @@
-import React, { Component, createRef } from 'react';
-import client from '../utils/feathers';
+import React from 'react';
+import { Members, Ask, Answer, Question, Results } from './';
 
-const poll = client.service('poll');
-
-export const Poll = class extends Component {
-  nameRef = createRef();
-
-  render() {
-    return <div>vote here</div>;
-  }
+export const Poll = ({ pin, members, leader, name, answers, question }) => {
+  return (
+    <>
+      <Members members={members} leader={leader} />
+      {leader === name && <Ask pin={pin} />}
+      <Question question={question} />
+      <Answer pin={pin} name={name} />
+      <Results answers={answers} />
+    </>
+  );
 };

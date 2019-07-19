@@ -1,60 +1,59 @@
 import React, { Component } from 'react';
 import Router from 'next/router';
 import client from '../utils/feathers';
-import { JoinPoll, CreatePoll, Poll, MemberList } from '../components';
+import { Join, Poll } from '../components';
 
 const poll = client.service('poll');
 
 const validatePin = async pin => {
   try {
     await poll.get(pin);
-    return {};
   } catch (err) {
     Router.push('/');
   }
 };
 
 export default class extends Component {
-  state = {
-    name: null,
-    leader: null,
-    isLeader: false,
-    members: []
-  };
+  constructor({ pin }) {
+    super({ pin });
+
+    this.state = {
+      pin,
+      name: null,
+      leader: null,
+      members: [],
+      question: null,
+      answers: {}
+    };
+  }
 
   static async getInitialProps({ req, query: { pin } }) {
     if (!req) {
       await validatePin(pin);
     }
+
     return { pin };
   }
 
   async componentDidMount() {
-    await validatePin(this.props.pin);
+    await validatePin(this.state.pin);
 
-    poll.on('patched', ({ leader, members }) => {
-      this.setState({ leader, members, isLeader: leader === this.state.name });
-    });
+    poll.on('patched', this.setState.bind(this));
   }
 
   handleJoin = ({ name, leader }) => {
-    this.setState({ name, leader, isLeader: leader === this.state.name });
+    this.setState({ name, leader });
   };
 
   render() {
-    const { name, isLeader, members, leader } = this.state;
-    const { pin } = this.props;
+    const { name, pin } = this.state;
 
     return (
       <>
         {name ? (
-          <>
-            <MemberList members={members} leader={leader} />
-            {isLeader && <CreatePoll pin={pin} />}
-            <Poll pin={pin} />
-          </>
+          <Poll {...this.state} />
         ) : (
-          <JoinPoll onJoin={this.handleJoin} pin={pin} />
+          <Join onJoin={this.handleJoin} pin={pin} />
         )}
       </>
     );
