@@ -1,35 +1,48 @@
 const { disallow } = require('feathers-hooks-common');
-const { BadRequest } = require('@feathersjs/errors');
 const generate = require('nanoid/generate');
 
-const addPin = context => {
-  context.data = { pin: generate('abcdefghijklmnopqrstuvwxyz', 4) };
+const addId = async context => {
+  context.data = { id: generate('abcdefghijklmnopqrstuvwxyz', 4) };
 
   return context;
 };
 
-const getRoomByPin = async context => {
-  const pin = context.id;
+const addEmptyUsers = async context => {
+  Object.assign(context.data, { users: [] });
 
-  const { total, data } = await context.service.find({ query: { pin } });
+  return context;
+};
 
-  if (!total) {
-    throw new BadRequest('Room with given pin not found');
+const joinRoom = async context => {
+  const {
+    data: { operation, name },
+    id
+  } = context;
+
+  if (operation === 'join') {
+    const { users } = await context.service.get(id);
+    const leader = {};
+
+    if (!users.length) {
+      leader.leader = name;
+    }
+
+    users.push(name);
+
+    context.data = { users, ...leader };
   }
-
-  context.id = data[0].id;
 
   return context;
 };
 
 module.exports = {
   before: {
-    all: [], //disallow('rest')],
-    find: [], //disallow('external')],
-    get: [getRoomByPin],
-    create: [addPin],
+    all: [], //[disallow('rest')],
+    find: [], //[disallow('external')],
+    get: [],
+    create: [addId, addEmptyUsers],
     update: [disallow('external')],
-    patch: [disallow('external')],
+    patch: [joinRoom],
     remove: [disallow('external')]
   },
 

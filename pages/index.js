@@ -10,15 +10,15 @@ export default class extends Component {
   joinRoomRef = createRef();
 
   createRoom = async () => {
-    const { pin } = await room.create({});
-    Router.push(`/${pin}`);
+    const { id } = await room.create({});
+    Router.push(`/${id}`);
   };
 
   joinRoom = async () => {
-    const pin = this.joinRoomRef.current.value;
+    const id = this.joinRoomRef.current.value;
     try {
-      await room.get(pin);
-      Router.push(`/${pin}`);
+      await room.get(id);
+      Router.push(`/${id}`);
     } catch (err) {
       if (err.type === 'FeathersError') {
         this.setState({ error: err.message });
