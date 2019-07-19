@@ -1,12 +1,13 @@
-import React, { Component, createRef } from 'react';
+import React, { Component } from 'react';
 import Router from 'next/router';
 import client from '../utils/feathers';
+import { JoinPoll, CreatePoll, Poll, MemberList } from '../components';
 
-const room = client.service('room');
+const poll = client.service('poll');
 
 const validatePin = async pin => {
   try {
-    await room.get(pin);
+    await poll.get(pin);
     return {};
   } catch (err) {
     Router.push('/');
@@ -15,10 +16,11 @@ const validatePin = async pin => {
 
 export default class extends Component {
   state = {
-    name: null
+    name: null,
+    leader: null,
+    isLeader: false,
+    members: []
   };
-
-  nameRef = createRef();
 
   static async getInitialProps({ req, query: { pin } }) {
     if (!req) {
@@ -26,27 +28,35 @@ export default class extends Component {
     }
     return { pin };
   }
+
   async componentDidMount() {
     await validatePin(this.props.pin);
+
+    poll.on('patched', ({ leader, members }) => {
+      this.setState({ leader, members, isLeader: leader === this.state.name });
+    });
   }
 
-  handleName = () => {
-    const name = this.nameRef.current.value;
-    if (name) {
-      this.setState({ name });
-
-      room.patch(this.props.pin, { operation: 'join', name });
-    }
+  handleJoin = ({ name, leader }) => {
+    this.setState({ name, leader, isLeader: leader === this.state.name });
   };
 
   render() {
-    return this.state.name ? (
-      <div>vote here</div>
-    ) : (
-      <div>
-        name <input type="text" ref={this.nameRef} />
-        <button onClick={this.handleName}>enter</button>
-      </div>
+    const { name, isLeader, members, leader } = this.state;
+    const { pin } = this.props;
+
+    return (
+      <>
+        {name ? (
+          <>
+            <MemberList members={members} leader={leader} />
+            {isLeader && <CreatePoll pin={pin} />}
+            <Poll pin={pin} />
+          </>
+        ) : (
+          <JoinPoll onJoin={this.handleJoin} pin={pin} />
+        )}
+      </>
     );
   }
 }

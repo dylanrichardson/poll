@@ -1,6 +1,6 @@
-// Initializes the `room` service on path `/room`
+// Initializes the `poll` service on path `/poll`
 const createService = require('feathers-memory');
-const hooks = require('./room.hooks');
+const hooks = require('./poll.hooks');
 
 module.exports = function(app) {
   const paginate = app.get('paginate');
@@ -10,10 +10,14 @@ module.exports = function(app) {
   };
 
   // Initialize our service with any options it requires
-  app.use('/room', createService(options));
+  app.use('/poll', createService(options));
 
   // Get our initialized service so that we can register hooks
-  const service = app.service('room');
+  const service = app.service('poll');
 
   service.hooks(hooks);
+
+  service.publish(({ id }) => {
+    return app.channel(id);
+  });
 };

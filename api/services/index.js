@@ -1,5 +1,5 @@
-const room = require('./room/room.service.js');
+const poll = require('./poll/poll.service.js');
 
 module.exports = app => {
-  app.configure(room);
+  app.configure(poll);
 };

@@ -29,12 +29,20 @@ const createApp = async () => {
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
 
-  // Trust proxy (for Heroku)
-  // app.enable('trust proxy');
-
   // Set up plugins and providers
   app.configure(express.rest());
-  app.configure(socketio());
+  app.configure(
+    socketio(io => {
+      io.on('connection', socket => {
+        socket.on('disconnect', () => {
+          const { name, poll } = socket.feathers;
+          if (poll) {
+            app.service('poll').patch(poll, { operation: 'leave', name });
+          }
+        });
+      });
+    })
+  );
 
   // Configure other middleware (see `middleware/index.js`)
   app.configure(middleware);

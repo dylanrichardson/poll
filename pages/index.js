@@ -2,22 +2,28 @@ import React, { Component, createRef } from 'react';
 import Router from 'next/router';
 import client from '../utils/feathers';
 
-const room = client.service('room');
+const poll = client.service('poll');
 
 export default class extends Component {
   state = { error: null };
 
-  joinRoomRef = createRef();
+  pinRef = createRef();
+
+  componentDidMount() {
+    this.pinRef.current.focus();
+  }
 
   createRoom = async () => {
-    const { id } = await room.create({});
+    const { id } = await poll.create({});
     Router.push(`/${id}`);
   };
 
-  joinRoom = async () => {
-    const id = this.joinRoomRef.current.value;
+  handleJoin = async event => {
+    event.preventDefault();
+
+    const id = this.pinRef.current.value;
     try {
-      await room.get(id);
+      await poll.get(id);
       Router.push(`/${id}`);
     } catch (err) {
       if (err.type === 'FeathersError') {
@@ -33,10 +39,12 @@ export default class extends Component {
       <div>
         <button onClick={this.createRoom}>Create Poll</button>
         <br />
-        pin <input type="text" ref={this.joinRoomRef} />
-        <button onClick={this.joinRoom}>Join Poll</button>
-        <br />
-        {this.state.error}
+        <form onSubmit={this.handleJoin}>
+          pin <input type="text" ref={this.pinRef} />
+          <button>Join Poll</button>
+          <br />
+          {this.state.error}
+        </form>
       </div>
     );
   }
