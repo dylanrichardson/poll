@@ -1,14 +1,22 @@
 import React from 'react';
-import { Members, Ask, Answer, Question, Results } from './';
+import { Members, Leader, Answer, Question, Results } from './';
 
-export const Poll = ({ pin, members, leader, name, answers, question }) => {
+export const Poll = ({
+  pin,
+  members,
+  leader,
+  name,
+  answers,
+  question,
+  showResults
+}) => {
   return (
     <>
       <Members members={members} leader={leader} />
-      {leader === name && <Ask pin={pin} />}
+      {leader === name && <Leader pin={pin} showResults={showResults} />}
       <Question question={question} />
       <Answer pin={pin} name={name} />
-      <Results answers={answers} />
+      {showResults && <Results answers={answers} />}
     </>
   );
 };

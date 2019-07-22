@@ -14,16 +14,17 @@ const validatePin = async pin => {
 };
 
 export default class extends Component {
-  constructor({ pin }) {
-    super({ pin });
+  constructor(props) {
+    super(props);
 
     this.state = {
-      pin,
+      pin: props.pin,
       name: null,
       leader: null,
       members: [],
       question: null,
-      answers: {}
+      answers: {},
+      showResults: false
     };
   }
 
