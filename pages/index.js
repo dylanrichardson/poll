@@ -1,5 +1,6 @@
 import React, { Component, createRef } from 'react';
 import Router from 'next/router';
+import { Button } from 'react-bootstrap';
 import client from '../utils/feathers';
 
 const poll = client.service('poll');
@@ -37,11 +38,11 @@ export default class extends Component {
   render() {
     return (
       <div>
-        <button onClick={this.createRoom}>Create Poll</button>
+        <Button onClick={this.createRoom}>Create Poll</Button>
         <br />
         <form onSubmit={this.handleJoin}>
           pin <input type="text" ref={this.pinRef} />
-          <button>Join Poll</button>
+          <Button>Join Poll</Button>
           <br />
           {this.state.error}
         </form>

@@ -24,6 +24,7 @@
     "@feathersjs/feathers": "^3.3.1",
     "@feathersjs/socketio": "^3.2.7",
     "babel-plugin-transform-inline-environment-variables": "^0.4.3",
+    "bootstrap": "^4.3.1",
     "compression": "^1.7.3",
     "dotenv": "^8.0.0",
     "feathers-hooks-common": "^4.20.7",
@@ -32,7 +33,9 @@
     "nanoid": "^2.0.3",
     "next": "^9.0.0",
     "react": "^16.8.6",
+    "react-bootstrap": "^1.0.0-beta.9",
     "react-dom": "^16.8.6",
+    "styled-components": "^4.3.2",
     "winston": "^3.2.1"
   },
   "devDependencies": {
