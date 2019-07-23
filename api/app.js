@@ -35,9 +35,16 @@ const createApp = async () => {
     socketio(io => {
       io.on('connection', socket => {
         socket.on('disconnect', () => {
-          const { name, poll } = socket.feathers;
-          if (poll) {
-            app.service('poll').patch(poll, { operation: 'leave', name });
+          const { name, poll, leader } = socket.feathers;
+
+          if (poll && (name || leader)) {
+            app
+              .service('poll')
+              .patch(
+                poll,
+                { operation: 'leave', name },
+                { connection: socket.feathers, app }
+              );
           }
         });
       });

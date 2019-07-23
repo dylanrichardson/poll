@@ -26,8 +26,26 @@ const addEmptyAnswers = async context => {
   return context;
 };
 
-const withOperation = async context => {
-  switch (context.data.operation) {
+const addPollToLeader = async context => {
+  const {
+    data: { id: poll },
+    params: { connection }
+  } = context;
+
+  Object.assign(connection, { poll });
+
+  return context;
+};
+
+const applyOperation = async context => {
+  const {
+    data: { operation },
+    params
+  } = context;
+
+  Object.assign(params, { operation });
+
+  switch (operation) {
     case 'join':
       return joinPoll(context);
     case 'leave':
@@ -38,74 +56,94 @@ const withOperation = async context => {
       return addAnswer(context);
     case 'toggleResults':
       return toggleResults(context);
+    case 'startJoin':
+      return startJoin(context);
     default:
-      throw new BadRequest('Patching a poll requires an operation.');
+      throw new BadRequest('Patching a poll requires a valid operation.');
   }
+};
+
+const startJoin = async context => {
+  const {
+    params: { connection },
+    service,
+    id: poll
+  } = context;
+
+  const { leader } = await service.get(poll);
+
+  if (!leader) {
+    Object.assign(connection, { leader: true, poll });
+  }
+  context.data = { leader: true };
+
+  return context;
 };
 
 const joinPoll = async context => {
   const {
-    id,
-    data: { operation, name },
+    id: poll,
+    data: { name },
     service,
     app,
     params: { connection }
   } = context;
 
-  if (operation === 'join') {
-    const { members } = await service.get(id);
-    const leader = {};
+  const { members } = await service.get(poll);
+  const leader = {};
 
-    if (members.includes(name)) {
-      throw new Conflict('A user with the same name is already in the poll.');
-    }
-
-    if (!name || name === '') {
-      throw new BadRequest('Join operation requires a name.');
-    }
-
-    if (!members.length) {
-      leader.leader = name;
-    }
-
-    members.push(name);
-
-    context.data = { members, ...leader };
-
-    Object.assign(connection, { name, poll: id });
-
-    app.channel(id).join(connection);
+  if (members.includes(name)) {
+    throw new Conflict('A user with the same name is already in the poll.');
   }
+
+  if (!name || name === '') {
+    throw new BadRequest('Join operation requires a name.');
+  }
+
+  if (connection.leader) {
+    leader.leader = name;
+  }
+
+  members.push(name);
+
+  context.data = { members, ...leader };
+
+  Object.assign(connection, { name, poll });
+
+  app.channel(poll).join(connection);
 
   return context;
 };
 
 const leavePoll = async context => {
   const {
-    id,
-    data: { operation },
     service,
     params: {
-      connection: { name }
-    }
+      connection,
+      connection: { poll, name }
+    },
+    app
   } = context;
 
-  if (operation === 'leave') {
-    const { members } = await service.get(id);
+  if (connection.name) {
+    const { members } = await service.get(poll);
     const leader = {};
 
     const index = members.indexOf(name);
-    if (index > -1) {
+    if (index >= 0) {
       members.splice(index, 1);
     }
 
     if (members.length) {
+      console.log('\n\n\nHERE');
       leader.leader = members[0];
     }
 
     context.data = { members, ...leader };
 
-    app.channel(id).leave(connection);
+    app.channel(poll).leave(connection);
+  } else {
+    context.data = {};
   }
 
   return context;
@@ -113,96 +151,91 @@ const leavePoll = async context => {
 
 const addQuestion = async context => {
   const {
-    data: { operation, question },
+    data: { question },
     params: {
       connection: { name }
     },
-    id,
+    id: poll,
     service
   } = context;
 
-  if (operation === 'ask') {
-    const { leader } = await service.get(id);
+  const { leader } = await service.get(poll);
 
-    if (name !== leader) {
-      throw new Forbidden('Ask operation requires the leader.');
-    }
-
-    if (!question || question === '') {
-      throw new BadRequest('Ask operation requires a question.');
-    }
-
-    context.data = { question, answers: {} };
+  if (name !== leader) {
+    throw new Forbidden('Ask operation requires the leader.');
   }
+
+  if (!question || question === '') {
+    throw new BadRequest('Ask operation requires a question.');
+  }
+
+  context.data = { question, answers: {} };
 
   return context;
 };
 
 const addAnswer = async context => {
   const {
-    id,
-    data: { operation, answer },
+    id: poll,
+    data: { answer },
     service,
     params: {
       connection: { name }
     }
   } = context;
 
-  if (operation === 'answer') {
-    if (!name) {
-      throw new BadRequest('Answer operation requires a name.');
-    }
-
-    if (!answer) {
-      throw new BadRequest('Answer operation requires an answer.');
-    }
-
-    const { answers } = await service.get(id);
-
-    context.data = { answers: { ...answers, [name]: answer } };
+  if (!name) {
+    throw new BadRequest('Answer operation requires a name.');
   }
+
+  if (!answer) {
+    throw new BadRequest('Answer operation requires an answer.');
+  }
+
+  const { answers } = await service.get(poll);
+
+  context.data = { answers: { ...answers, [name]: answer } };
 
   return context;
 };
 
 const toggleResults = async context => {
   const {
-    id,
-    data: { operation, showResults },
+    id: poll,
+    data: { showResults },
     service,
     params: {
       connection: { name }
     }
   } = context;
 
-  if (operation === 'toggleResults') {
-    const { leader } = await service.get(id);
+  const { leader } = await service.get(poll);
 
-    if (name !== leader) {
-      throw new Forbidden('Toggle results operation requires the leader.');
-    }
-
-    if (showResults === null || showResults === undefined) {
-      throw new BadRequest(
-        'Toggle results operation requires a showResults parameter.'
-      );
-    }
-
-    context.data = { showResults };
+  if (name !== leader) {
+    throw new Forbidden('Toggle results operation requires the leader.');
   }
+
+  if (showResults === null || showResults === undefined) {
+    throw new BadRequest(
+      'Toggle results operation requires a showResults parameter.'
+    );
+  }
+
+  context.data = { showResults };
 
   return context;
 };
 
 const removePoll = async context => {
   const {
-    id,
+    id: poll,
     result: { members },
+    params: { operation },
     service
   } = context;
 
-  if (!members.length) {
-    await service.remove(id);
+  if (operation === 'leave' && !members.length) {
+    await service.remove(poll);
   }
 
   return context;
@@ -213,9 +246,15 @@ module.exports = {
     all: [], //[disallow('rest')],
     find: [], //[disallow('external')],
     get: [],
-    create: [addId, addEmptyMembers, addEmptyQuestion, addEmptyAnswers],
+    create: [
+      addId,
+      addEmptyMembers,
+      addEmptyQuestion,
+      addEmptyAnswers,
+      addPollToLeader
+    ],
     update: [disallow('external')],
-    patch: [withOperation],
+    patch: [applyOperation],
     remove: [disallow('external')]
   },
 

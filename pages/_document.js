@@ -1,24 +1,26 @@
 import Document, { Head, Main, NextScript } from 'next/document';
-// import { ServerStyleSheet } from 'styled-components';
+import { ServerStyleSheet } from 'styled-components';
 
 export default class MyDocument extends Document {
-  //   static getInitialProps({ renderPage }) {
-  //     // Step 1: Create an instance of ServerStyleSheet
-  //     const sheet = new ServerStyleSheet();
+  static getInitialProps({ renderPage }) {
+    // Step 1: Create an instance of ServerStyleSheet
+    const sheet = new ServerStyleSheet();
 
-  //     // Step 2: Retrieve styles from components in the page
-  //     const page = renderPage(App => props =>
-  //       sheet.collectStyles(<App {...props} />)
-  //     );
+    // Step 2: Retrieve styles from components in the page
+    const page = renderPage(App => props =>
+      sheet.collectStyles(<App {...props} />)
+    );
 
-  //     // Step 3: Extract the styles as <style> tags
-  //     const styleTags = sheet.getStyleElement();
+    // Step 3: Extract the styles as <style> tags
+    const styleTags = sheet.getStyleElement();
 
-  //     // Step 4: Pass styleTags as a prop
-  //     return { ...page, styleTags };
-  //   }
+    // Step 4: Pass styleTags as a prop
+    return { ...page, styleTags };
+  }
 
   render() {
+    const { styleTags } = this.props;
+
     return (
       <html>
         <Head>
@@ -34,8 +36,10 @@ export default class MyDocument extends Document {
             rel="stylesheet"
             href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
             integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-            crossorigin="anonymous"
+            crossOrigin="anonymous"
           />
+
+          {styleTags}
         </Head>
         <body>
           <Main />

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Router from 'next/router';
 import client from '../utils/feathers';
-import { Join, Poll } from '../components';
+import { NameInput, Poll } from '../components';
 
 const poll = client.service('poll');
 
@@ -54,7 +54,7 @@ export default class extends Component {
         {name ? (
           <Poll {...this.state} />
         ) : (
-          <Join onJoin={this.handleJoin} pin={pin} />
+          <NameInput onJoin={this.handleJoin} pin={pin} />
         )}
       </>
     );

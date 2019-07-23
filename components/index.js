@@ -1,4 +1,4 @@
-export * from './Join';
+export * from './NameInput';
 export * from './Ask';
 export * from './Answer';
 export * from './Members';
@@ -9,3 +9,4 @@ export * from './Leader';
 export * from './ToggleResults';
 export * from './LoadingApp';
 export * from './LoadingPage';
+export * from './JoinPoll';

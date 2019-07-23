@@ -1,4 +1,14 @@
 {
   "presets": ["next/babel"],
-  "plugins": ["transform-inline-environment-variables"]
+  "plugins": [
+    [
+      "styled-components",
+      {
+        "ssr": true,
+        "displayName": true,
+        "preprocess": false
+      }
+    ],
+    ["transform-inline-environment-variables"]
+  ]
 }
