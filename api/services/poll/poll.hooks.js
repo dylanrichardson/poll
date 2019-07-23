@@ -15,7 +15,7 @@ const addEmptyMembers = async context => {
 };
 
 const addEmptyQuestion = async context => {
-  Object.assign(context.data, { question: '' });
+  Object.assign(context.data, { question: null });
 
   return context;
 };
@@ -74,8 +74,9 @@ const startJoin = async context => {
 
   if (!leader) {
     Object.assign(connection, { leader: true, poll });
+
+    context.data = { leader: true };
   }
-  context.data = { leader: true };
 
   return context;
 };

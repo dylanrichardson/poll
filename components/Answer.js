@@ -1,4 +1,5 @@
 import React, { Component, createRef } from 'react';
+import { Spinner } from 'react-bootstrap';
 import client from '../utils/feathers';
 
 const poll = client.service('poll');
@@ -18,11 +19,28 @@ export const Answer = class extends Component {
   };
 
   render() {
-    return (
+    const { question, isLeader } = this.props;
+
+    return question ? (
       <form onSubmit={this.handleAnswer}>
         answer <input type="text" ref={this.answerRef} />
         <button>enter</button>
       </form>
+    ) : (
+      !isLeader && (
+        <>
+          <span
+            style={{
+              marginTop: 'auto',
+              marginBottom: 'auto',
+              textAlgin: 'center'
+            }}
+          >
+            Waiting for question
+          </span>
+          <Spinner animation="grow" variant="primary" />
+        </>
+      )
     );
   }
 };
