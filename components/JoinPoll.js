@@ -5,15 +5,14 @@ import client from '../utils/feathers';
 import { CenteredRow } from '../styles';
 
 const poll = client.service('poll');
+const pinRef = createRef();
 
 export const JoinPoll = class extends Component {
   state = { error: null, showPinInput: false };
 
-  pinRef = createRef();
-
   componentDidUpdate() {
     if (this.state.showPinInput) {
-      this.pinRef.current.focus();
+      pinRef.current.focus();
     }
   }
 
@@ -22,7 +21,7 @@ export const JoinPoll = class extends Component {
   };
 
   handleJoin = async () => {
-    const id = this.pinRef.current.value;
+    const id = pinRef.current.value;
 
     if (id !== '') {
       try {
@@ -45,12 +44,8 @@ export const JoinPoll = class extends Component {
     }
 
     if (event.keyCode === 27) {
-      return this.handleCancel();
+      return this.setState({ showPinInput: false, error: null });
     }
-  };
-
-  handleCancel = () => {
-    this.setState({ showPinInput: false, error: null });
   };
 
   render() {
@@ -63,19 +58,12 @@ export const JoinPoll = class extends Component {
             <FormControl
               placeholder="Pin"
               aria-label="Poll Pin"
-              ref={this.pinRef}
+              ref={pinRef}
               onKeyDown={this.handlePin}
             />
-            <InputGroup.Append style={{ marginRight: '-5px' }}>
+            <InputGroup.Append>
               <Button variant="outline-primary" onClick={this.handleJoin}>
                 Join
-              </Button>
-              <Button
-                onClick={this.handleCancel}
-                variant="outline-primary"
-                style={{ width: '50%', paddingLeft: '5px' }}
-              >
-                Cancel
               </Button>
             </InputGroup.Append>
           </InputGroup>

@@ -5,7 +5,6 @@ export * from './Members';
 export * from './Results';
 export * from './Poll';
 export * from './Question';
-export * from './Leader';
 export * from './ToggleResults';
 export * from './LoadingApp';
 export * from './LoadingPage';

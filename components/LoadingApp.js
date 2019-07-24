@@ -1,11 +1,11 @@
 import React from 'react';
 import { Spinner } from 'react-bootstrap';
-import { CenteredContainer, CenteredRow } from '../styles';
+import { PageContainer, CenteredRow } from '../styles';
 
 export const LoadingApp = () => (
-  <CenteredContainer>
+  <PageContainer>
     <CenteredRow>
       <Spinner animation="border" variant="primary" />
     </CenteredRow>
-  </CenteredContainer>
+  </PageContainer>
 );

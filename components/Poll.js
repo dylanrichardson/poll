@@ -1,6 +1,17 @@
 import React from 'react';
-import { Members, Leader, Answer, Question, Results } from './';
+import { Col } from 'react-bootstrap';
+import styled from 'styled-components';
+import { Members, Ask, ToggleResults, Answer, Question, Results } from './';
 import { CenteredContainer, CenteredRow } from '../styles';
+
+const CenteredCol = styled(Col)`
+  height: 100%;
+  margin-left: -25vw;
+
+  @media (min-width: 1200px) {
+    margin-left: ${-100 / 6}vw;
+  }
+`;
 
 export const Poll = ({
   pin,
@@ -11,26 +22,36 @@ export const Poll = ({
   question,
   showResults
 }) => {
+  const isLeader = leader === name;
+  const ownAnswer = answers[name];
+
   return (
-    <CenteredContainer>
-      <CenteredRow>
-        <Members members={members} leader={leader} name={name} />
+    <CenteredContainer fluid={true} height="100vh" verticalPadding="5vh">
+      <CenteredRow className="align-items-center" style={{ height: '100%' }}>
+        <Col xs={3} xl={2}>
+          <Members members={members} leader={leader} name={name} />
+        </Col>
+        <CenteredCol>
+          <CenteredContainer>
+            <Question question={question} />
+            <Ask pin={pin} isLeader={isLeader} />
+            <Answer
+              pin={pin}
+              name={name}
+              question={question}
+              isLeader={isLeader}
+              ownAnswer={ownAnswer}
+            />
+            <ToggleResults
+              pin={pin}
+              isLeader={isLeader}
+              showResults={showResults}
+              question={question}
+            />
+            <Results answers={answers} showResults={showResults} />
+          </CenteredContainer>
+        </CenteredCol>
       </CenteredRow>
-      <CenteredRow>
-        {leader === name && <Leader pin={pin} showResults={showResults} />}
-      </CenteredRow>
-      <CenteredRow>
-        <Question question={question} />
-      </CenteredRow>
-      <CenteredRow>
-        <Answer
-          pin={pin}
-          name={name}
-          question={question}
-          isLeader={leader === name}
-        />
-      </CenteredRow>
-      <CenteredRow> {showResults && <Results answers={answers} />}</CenteredRow>
     </CenteredContainer>
   );
 };

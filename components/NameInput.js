@@ -2,26 +2,26 @@ import React, { Component, createRef } from 'react';
 import Router from 'next/router';
 import { Button, InputGroup, FormControl, Alert } from 'react-bootstrap';
 import client from '../utils/feathers';
-import { CenteredContainer, CenteredRow } from '../styles';
+import { CenteredRow, PageContainer } from '../styles';
 
 const poll = client.service('poll');
+
+const nameRef = createRef();
 
 export const NameInput = class extends Component {
   state = {
     error: null
   };
 
-  nameRef = createRef();
-
   componentDidMount() {
-    this.nameRef.current.focus();
+    nameRef.current.focus();
 
     poll.patch(this.props.pin, { operation: 'startJoin' });
   }
 
   handleJoin = async () => {
     const { pin, onJoin } = this.props;
-    const name = this.nameRef.current.value;
+    const name = nameRef.current.value;
 
     if (name !== '') {
       try {
@@ -55,13 +55,13 @@ export const NameInput = class extends Component {
     const { error } = this.state;
 
     return (
-      <CenteredContainer>
+      <PageContainer>
         <CenteredRow>
           <InputGroup style={{ width: '60%', maxWidth: '324px' }}>
             <FormControl
               placeholder="Your name"
               aria-label="Your Name"
-              ref={this.nameRef}
+              ref={nameRef}
               onKeyDown={this.handleName}
             />
             <InputGroup.Append>
@@ -82,7 +82,7 @@ export const NameInput = class extends Component {
             </Alert>
           </CenteredRow>
         )}
-      </CenteredContainer>
+      </PageContainer>
     );
   }
 };
