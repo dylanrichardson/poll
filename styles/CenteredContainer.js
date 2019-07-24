@@ -7,6 +7,6 @@ export const CenteredContainer = styled(Container)`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  ${({ verticalPadding }) =>
-    verticalPadding && `padding: ${verticalPadding} 0%;`}
+  ${({ verticalpadding }) =>
+    verticalpadding && `padding: ${verticalpadding} 0%;`}
 `;

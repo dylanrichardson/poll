@@ -1,9 +1,18 @@
 import React from 'react';
-import { CenteredContainer } from './CenteredContainer';
+import { CenteredContainer } from './';
 
-export const PageContainer = ({ children }) => {
+export const PageContainer = ({
+  children,
+  height = '100vh',
+  verticalPadding = '25vh',
+  fluid = true
+}) => {
   return (
-    <CenteredContainer fluid={true} height="100vh" verticalPadding="25vh">
+    <CenteredContainer
+      fluid={fluid}
+      height={height}
+      verticalpadding={verticalPadding}
+    >
       {children}
     </CenteredContainer>
   );

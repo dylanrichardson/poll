@@ -2,7 +2,7 @@ import React from 'react';
 import { Col } from 'react-bootstrap';
 import styled from 'styled-components';
 import { Members, Ask, ToggleResults, Answer, Question, Results } from './';
-import { CenteredContainer, CenteredRow } from '../styles';
+import { PageContainer, CenteredContainer, CenteredRow } from '../styles';
 
 const CenteredCol = styled(Col)`
   height: 100%;
@@ -26,9 +26,9 @@ export const Poll = ({
   const ownAnswer = answers[name];
 
   return (
-    <CenteredContainer fluid={true} height="100vh" verticalPadding="5vh">
+    <PageContainer verticalPadding="5vh">
       <CenteredRow className="align-items-center" style={{ height: '100%' }}>
-        <Col xs={3} xl={2}>
+        <Col xs={3} xl={2} style={{ zIndex: 1 }}>
           <Members members={members} leader={leader} name={name} />
         </Col>
         <CenteredCol>
@@ -52,6 +52,6 @@ export const Poll = ({
           </CenteredContainer>
         </CenteredCol>
       </CenteredRow>
-    </CenteredContainer>
+    </PageContainer>
   );
 };
