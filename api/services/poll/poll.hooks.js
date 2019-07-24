@@ -244,8 +244,8 @@ const removePoll = async context => {
 
 module.exports = {
   before: {
-    all: [], //[disallow('rest')],
-    find: [], //[disallow('external')],
+    all: [disallow('rest')],
+    find: [disallow('external')],
     get: [],
     create: [
       addId,
