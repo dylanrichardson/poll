@@ -30,10 +30,12 @@
     "feathers-hooks-common": "^4.20.7",
     "feathers-memory": "^3.0.2",
     "helmet": "^3.18.0",
+    "lodash": "^4.17.15",
     "nanoid": "^2.0.3",
     "next": "^9.0.0",
     "react": "^16.8.6",
     "react-bootstrap": "^1.0.0-beta.10",
+    "react-d3-components": "^0.9.1",
     "react-dom": "^16.8.6",
     "styled-components": "^4.3.2",
     "winston": "^3.2.1"

@@ -24,7 +24,7 @@ export const Members = ({ leader, members, name }) => {
         >
           <Container>
             <Row>
-              <Col style={{ padding: '0px' }}>Members</Col>
+              <Col style={{ padding: '0px' }}>Active</Col>
               <Col xs={1}>
                 <i
                   className={`fas fa-chevron-circle-${
