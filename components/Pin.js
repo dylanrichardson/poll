@@ -21,20 +21,20 @@ export const Pin = ({ pin }) => {
     <CenteredRow>
       <Card style={{ minWidth: '140px', marginBottom: '30px' }}>
         <Card.Header style={{ textAlign: 'center' }}>
-          Pin{' '}
+          <span style={{ verticalAlign: 'text-top' }}>Pin </span>
           <Badge
             variant="primary"
             pill={true}
             style={{
               fontSize: '16px',
-              verticalAlign: 'bottom',
+              verticalAlign: 'text-top',
               cursor: 'pointer'
             }}
             id="pin"
             data-clipboard-text={pin}
             ref={pinRef}
           >
-            <span style={{ verticalAlign: 'middle' }}>{pin}</span>
+            <span style={{ verticalAlign: 'inherit' }}>{pin}</span>
           </Badge>
           <Overlay target={pinRef.current} show={show} placement="right">
             {props => (
