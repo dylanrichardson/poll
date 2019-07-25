@@ -1,4 +1,4 @@
-import React, { Component, createRef } from 'react';
+import React, { useState, useEffect, createRef } from 'react';
 import Router from 'next/router';
 import { Button, InputGroup, FormControl, Alert } from 'react-bootstrap';
 import client from '../utils/feathers';
@@ -8,19 +8,16 @@ const poll = client.service('poll');
 
 const nameRef = createRef();
 
-export const NameInput = class extends Component {
-  state = {
-    error: null
-  };
+export const NameInput = ({ pin, onJoin }) => {
+  const [error, setError] = useState(null);
 
-  componentDidMount() {
+  useEffect(() => {
     nameRef.current.focus();
 
-    poll.patch(this.props.pin, { operation: 'startJoin' });
-  }
+    poll.patch(pin, { operation: 'startJoin' });
+  });
 
-  handleJoin = async () => {
-    const { pin, onJoin } = this.props;
+  const handleJoin = async () => {
     const name = nameRef.current.value;
 
     if (name !== '') {
@@ -37,7 +34,7 @@ export const NameInput = class extends Component {
             return Router.push('/');
           }
 
-          return this.setState({ error: err.message });
+          return setError(err.message);
         }
 
         console.error(err);
@@ -45,44 +42,36 @@ export const NameInput = class extends Component {
     }
   };
 
-  handleName = event => {
+  const handleName = event => {
     if (event.keyCode === 13) {
-      return this.handleJoin();
+      return handleJoin();
     }
   };
 
-  render() {
-    const { error } = this.state;
-
-    return (
-      <PageContainer>
-        <CenteredRow>
-          <InputGroup style={{ width: '60%', maxWidth: '324px' }}>
-            <FormControl
-              placeholder="Your name"
-              aria-label="Your Name"
-              ref={nameRef}
-              onKeyDown={this.handleName}
-            />
-            <InputGroup.Append>
-              <Button variant="outline-primary" onClick={this.handleJoin}>
-                Enter
-              </Button>
-            </InputGroup.Append>
-          </InputGroup>
+  return (
+    <PageContainer>
+      <CenteredRow>
+        <InputGroup style={{ width: '60%', maxWidth: '324px' }}>
+          <FormControl
+            placeholder="Your name"
+            aria-label="Your Name"
+            ref={nameRef}
+            onKeyDown={handleName}
+          />
+          <InputGroup.Append>
+            <Button variant="outline-primary" onClick={handleJoin}>
+              Enter
+            </Button>
+          </InputGroup.Append>
+        </InputGroup>
+      </CenteredRow>
+      {error && (
+        <CenteredRow className="mt-3">
+          <Alert variant="danger" onClose={() => setError(null)} dismissible>
+            {error}
+          </Alert>
         </CenteredRow>
-        {error && (
-          <CenteredRow className="mt-3">
-            <Alert
-              variant="danger"
-              onClose={() => this.setState({ error: null })}
-              dismissible
-            >
-              {error}
-            </Alert>
-          </CenteredRow>
-        )}
-      </PageContainer>
-    );
-  }
+      )}
+    </PageContainer>
+  );
 };

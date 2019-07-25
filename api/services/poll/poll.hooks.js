@@ -136,7 +136,6 @@ const leavePoll = async context => {
     }
 
     if (members.length) {
-      console.log('\n\n\nHERE');
       leader.leader = members[0];
     }
 

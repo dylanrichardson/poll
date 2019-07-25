@@ -25,6 +25,8 @@ export const Poll = ({
   const isLeader = leader === name;
   const ownAnswer = answers[name];
 
+  members.sort();
+
   return (
     <PageContainer verticalPadding="5vh">
       <CenteredRow className="align-items-center" style={{ height: '100%' }}>

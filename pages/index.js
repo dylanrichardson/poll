@@ -7,27 +7,25 @@ import { JoinPoll } from '../components';
 
 const poll = client.service('poll');
 
-export default class extends Component {
-  createPoll = async () => {
-    const { id } = await poll.create({});
-    Router.push(`/${id}`);
-  };
+const createPoll = async () => {
+  const { id } = await poll.create({});
+  Router.push(`/${id}`);
+};
 
-  render() {
-    return (
-      <PageContainer>
-        <CenteredRow>
-          <Button
-            style={{ width: '35%', minWidth: '100px', maxWidth: '188px' }}
-            onClick={this.createPoll}
-          >
-            Create Poll
-          </Button>
-        </CenteredRow>
-        <CenteredRow>
-          <JoinPoll />
-        </CenteredRow>
-      </PageContainer>
-    );
-  }
-}
+export default () => {
+  return (
+    <PageContainer>
+      <CenteredRow>
+        <Button
+          style={{ width: '35%', minWidth: '100px', maxWidth: '188px' }}
+          onClick={createPoll}
+        >
+          Create Poll
+        </Button>
+      </CenteredRow>
+      <CenteredRow>
+        <JoinPoll />
+      </CenteredRow>
+    </PageContainer>
+  );
+};
