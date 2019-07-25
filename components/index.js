@@ -10,3 +10,4 @@ export * from './LoadingApp';
 export * from './LoadingPage';
 export * from './JoinPoll';
 export * from './Pin';
+export * from './Info';

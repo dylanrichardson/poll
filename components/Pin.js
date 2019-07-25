@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, Badge, Tooltip, Overlay } from 'react-bootstrap';
 import Clipboard from 'clipboard';
-import { CenteredRow } from '../styles';
 
-export const Pin = ({ pin }) => {
+export const Pin = ({ pin, isMobile = false }) => {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -17,38 +16,37 @@ export const Pin = ({ pin }) => {
 
   const pinRef = useRef(null);
 
+  const nonMobileStyles = {};
+  if (!isMobile) {
+    nonMobileStyles.marginBottom = '30px';
+  }
+
   return (
-    <CenteredRow>
-      <Card style={{ minWidth: '140px', marginBottom: '30px' }}>
-        <Card.Header style={{ textAlign: 'center' }}>
-          <span style={{ verticalAlign: 'text-top' }}>Pin </span>
-          <Badge
-            variant="primary"
-            pill={true}
-            style={{
-              fontSize: '16px',
-              verticalAlign: 'text-top',
-              cursor: 'pointer'
-            }}
-            id="pin"
-            data-clipboard-text={pin}
-            ref={pinRef}
-          >
-            <span style={{ verticalAlign: 'inherit' }}>{pin}</span>
-          </Badge>
-          <Overlay target={pinRef.current} show={show} placement="right">
-            {props => (
-              <Tooltip
-                id="tooltip-right"
-                {...props}
-                show={props.show.toString()}
-              >
-                Copied!
-              </Tooltip>
-            )}
-          </Overlay>
-        </Card.Header>
-      </Card>
-    </CenteredRow>
+    <Card style={{ minWidth: '140px', ...nonMobileStyles }}>
+      <Card.Header style={{ textAlign: 'center' }}>
+        <span style={{ verticalAlign: 'text-top' }}>Pin </span>
+        <Badge
+          variant="primary"
+          pill={true}
+          style={{
+            fontSize: '16px',
+            verticalAlign: 'text-top',
+            cursor: 'pointer'
+          }}
+          id="pin"
+          data-clipboard-text={pin}
+          ref={pinRef}
+        >
+          <span>{pin}</span>
+        </Badge>
+        <Overlay target={pinRef.current} show={show} placement="right">
+          {props => (
+            <Tooltip id="tooltip-right" {...props} show={props.show.toString()}>
+              Copied!
+            </Tooltip>
+          )}
+        </Overlay>
+      </Card.Header>
+    </Card>
   );
 };

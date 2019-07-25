@@ -1,31 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { CenteredRow } from '../styles';
 import { BarChart } from 'react-d3-components';
 import _ from 'lodash';
 
-const WIDTH_RATIO = 0.7;
-const HEIGHT_RATIO = 0.4;
+const WIDTH_RATIO = 0.6;
+const HEIGHT_RATIO = 0.3;
 
-export const Results = ({ answers, showResults }) => {
-  const defaultWidth = (window && window.innerWidth * WIDTH_RATIO) || 400;
-  const defaultHeight = (window && window.innerHeight * HEIGHT_RATIO) || 300;
-
-  const [width, setWidth] = useState(defaultWidth);
-  const [height, setHeight] = useState(defaultHeight);
-
-  const updateChartDimensions = () => {
-    setWidth(window.innerWidth * WIDTH_RATIO);
-    setHeight(window.innerHeight * HEIGHT_RATIO);
-  };
-
-  useEffect(() => {
-    updateChartDimensions();
-
-    window.addEventListener('resize', updateChartDimensions);
-
-    return () => window.removeEventListener('resize', updateChartDimensions);
-  });
-
+export const Results = ({ answers, showResults, width, height }) => {
   const values = _.sortBy(
     Object.entries(_.countBy(Object.values(answers))).map(([x, y]) => ({
       x,
@@ -36,15 +17,29 @@ export const Results = ({ answers, showResults }) => {
 
   const numTicks = _.max(_.map(values, 'y'));
 
+  const chartWidth =
+    window.innerWidth < 768
+      ? window.innerWidth * 0.8
+      : window.innerWidth * WIDTH_RATIO;
+  const chartHeight = window.innerHeight * HEIGHT_RATIO;
+
+  const horizontalMargin = chartWidth * 0.1;
+  const verticalMargin = chartHeight * 0.05;
+
   return (
     showResults &&
     values.length > 0 && (
       <CenteredRow>
         <BarChart
           data={{ values }}
-          width={width}
-          height={height}
-          margin={{ top: 50, bottom: 50, left: 100, right: 100 }}
+          width={chartWidth}
+          height={chartHeight}
+          margin={{
+            top: verticalMargin,
+            bottom: verticalMargin,
+            left: horizontalMargin,
+            right: horizontalMargin
+          }}
           yAxis={{ tickArguments: [numTicks] }}
           sort={d3.ascending}
         />

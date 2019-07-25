@@ -1,22 +1,20 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Col } from 'react-bootstrap';
 import styled from 'styled-components';
-import {
-  Members,
-  Ask,
-  ToggleResults,
-  Answer,
-  Question,
-  Results,
-  Pin
-} from './';
+import { Ask, ToggleResults, Answer, Question, Results, Info } from './';
 import { PageContainer, CenteredContainer, CenteredRow } from '../styles';
+
+const MEDIUM = 768;
+const EXTRA_LARGE = 1200;
 
 const CenteredCol = styled(Col)`
   height: 100%;
-  margin-left: -25vw;
 
-  @media (min-width: 1200px) {
+  @media (min-width: ${MEDIUM}px) {
+    margin-left: -25vw;
+  }
+
+  @media (min-width: ${EXTRA_LARGE}px) {
     margin-left: ${-100 / 6}vw;
   }
 `;
@@ -30,6 +28,25 @@ export const Poll = ({
   question,
   showResults
 }) => {
+  const defaultWidth = (window && window.innerWidth) || 700;
+  const defaultHeight = (window && window.innerHeight) || 1000;
+
+  const [width, setWidth] = useState(defaultWidth);
+  const [height, setHeight] = useState(defaultHeight);
+
+  const updateWindowDimensions = () => {
+    setWidth(window.innerWidth);
+    setHeight(window.innerHeight);
+  };
+
+  useEffect(() => {
+    updateWindowDimensions();
+
+    window.addEventListener('resize', updateWindowDimensions);
+
+    return () => window.removeEventListener('resize', updateWindowDimensions);
+  });
+
   const isLeader = leader === name;
   const ownAnswer = answers[name];
 
@@ -38,10 +55,13 @@ export const Poll = ({
   return (
     <PageContainer verticalPadding="5vh">
       <CenteredRow className="align-items-center" style={{ height: '100%' }}>
-        <Col xs={3} xl={2} style={{ zIndex: 1 }}>
-          <Pin pin={pin} />
-          <Members members={members} leader={leader} name={name} />
-        </Col>
+        <Info
+          isMobile={width < MEDIUM}
+          members={members}
+          leader={leader}
+          name={name}
+          pin={pin}
+        />
         <CenteredCol>
           <CenteredContainer>
             <Question question={question} />
@@ -59,7 +79,12 @@ export const Poll = ({
               showResults={showResults}
               question={question}
             />
-            <Results answers={answers} showResults={showResults} />
+            <Results
+              answers={answers}
+              showResults={showResults}
+              width={width}
+              height={height}
+            />
           </CenteredContainer>
         </CenteredCol>
       </CenteredRow>
