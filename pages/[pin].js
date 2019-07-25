@@ -49,14 +49,10 @@ export default class extends Component {
   render() {
     const { name, pin } = this.state;
 
-    return (
-      <>
-        {name ? (
-          <Poll {...this.state} />
-        ) : (
-          <NameInput onJoin={this.handleJoin} pin={pin} />
-        )}
-      </>
+    return name ? (
+      <Poll {...this.state} />
+    ) : (
+      <NameInput onJoin={this.handleJoin} pin={pin} />
     );
   }
 }

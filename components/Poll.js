@@ -47,8 +47,9 @@ export const Poll = ({
     return () => window.removeEventListener('resize', updateWindowDimensions);
   });
 
-  const isLeader = leader === name;
   const ownAnswer = answers[name];
+  const isLeader = leader === name;
+  const isMobile = width < MEDIUM;
 
   members.sort();
 
@@ -56,7 +57,7 @@ export const Poll = ({
     <PageContainer verticalPadding="5vh">
       <CenteredRow className="align-items-center" style={{ height: '100%' }}>
         <Info
-          isMobile={width < MEDIUM}
+          isMobile={isMobile}
           width={width}
           members={members}
           leader={leader}
@@ -66,13 +67,14 @@ export const Poll = ({
         <CenteredCol>
           <CenteredContainer>
             <Question question={question} />
-            <Ask pin={pin} isLeader={isLeader} />
+            <Ask pin={pin} isLeader={isLeader} isMobile={isMobile} />
             <Answer
               pin={pin}
               name={name}
               question={question}
               isLeader={isLeader}
               ownAnswer={ownAnswer}
+              isMobile={isMobile}
             />
             <ToggleResults
               pin={pin}

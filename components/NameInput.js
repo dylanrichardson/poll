@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Router from 'next/router';
 import { Button, InputGroup, FormControl, Alert } from 'react-bootstrap';
 import client from '../utils/feathers';
@@ -6,9 +6,9 @@ import { CenteredRow, PageContainer } from '../styles';
 
 const poll = client.service('poll');
 
-const nameRef = createRef();
-
 export const NameInput = ({ pin, onJoin }) => {
+  const nameRef = useRef(null);
+
   const [error, setError] = useState(null);
 
   useEffect(() => {

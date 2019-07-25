@@ -1,13 +1,13 @@
-import React, { useEffect, createRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Button, InputGroup, FormControl } from 'react-bootstrap';
 import client from '../utils/feathers';
 import { CenteredRow } from '../styles';
 
 const poll = client.service('poll');
 
-const questionRef = createRef();
+export const Ask = ({ pin, isLeader, isMobile }) => {
+  const questionRef = useRef(null);
 
-export const Ask = ({ pin, isLeader }) => {
   useEffect(() => {
     if (isLeader) {
       questionRef.current.focus();
@@ -28,10 +28,12 @@ export const Ask = ({ pin, isLeader }) => {
     }
   };
 
+  const width = isMobile ? '80%' : '50%';
+
   return (
     isLeader && (
       <CenteredRow>
-        <InputGroup style={{ width: '50%', maxWidth: '480px' }}>
+        <InputGroup style={{ width, maxWidth: '480px' }}>
           <FormControl
             placeholder="Question"
             aria-label="Poll Question"
@@ -39,7 +41,11 @@ export const Ask = ({ pin, isLeader }) => {
             onKeyDown={handleKey}
           />
           <InputGroup.Append>
-            <Button variant="outline-primary" onClick={handleQuestion}>
+            <Button
+              variant="outline-primary"
+              onClick={handleQuestion}
+              style={{ width: '80px' }}
+            >
               Ask
             </Button>
           </InputGroup.Append>

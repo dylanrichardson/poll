@@ -7,7 +7,14 @@ const poll = client.service('poll');
 
 const answerRef = createRef();
 
-export const Answer = ({ question, isLeader, ownAnswer, pin, name }) => {
+export const Answer = ({
+  question,
+  isLeader,
+  ownAnswer,
+  pin,
+  name,
+  isMobile
+}) => {
   useEffect(() => {
     if (question) {
       answerRef.current.focus();
@@ -28,10 +35,12 @@ export const Answer = ({ question, isLeader, ownAnswer, pin, name }) => {
     }
   };
 
+  const width = isMobile ? '80%' : '50%';
+
   return question ? (
     <>
       <CenteredRow>
-        <InputGroup style={{ width: '50%', maxWidth: '480px' }}>
+        <InputGroup style={{ width, maxWidth: '480px' }}>
           <FormControl
             placeholder="Your answer"
             aria-label="Your Answer"
@@ -39,7 +48,11 @@ export const Answer = ({ question, isLeader, ownAnswer, pin, name }) => {
             onKeyDown={handleKey}
           />
           <InputGroup.Append>
-            <Button variant="outline-primary" onClick={handleAnswer}>
+            <Button
+              variant="outline-primary"
+              onClick={handleAnswer}
+              style={{ width: '80px' }}
+            >
               Answer
             </Button>
           </InputGroup.Append>

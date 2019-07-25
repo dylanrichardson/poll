@@ -24,7 +24,9 @@ export const Pin = ({ pin, isMobile = false }) => {
 
   return (
     <Card style={nonMobileStyles}>
-      <Card.Header style={{ textAlign: 'center' }}>
+      <Card.Header
+        style={{ textAlign: 'center', paddingLeft: '0px', paddingRight: '0px' }}
+      >
         <span style={{ verticalAlign: 'text-top' }}>Pin </span>
         <Badge
           variant="primary"
