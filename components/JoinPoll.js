@@ -19,7 +19,7 @@ export const JoinPoll = () => {
   });
 
   const handleJoin = async () => {
-    const id = pinRef.current.value;
+    const id = pinRef.current.value.toUpperCase();
 
     if (id !== '') {
       try {

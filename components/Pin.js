@@ -19,10 +19,11 @@ export const Pin = ({ pin, isMobile = false }) => {
   const nonMobileStyles = {};
   if (!isMobile) {
     nonMobileStyles.marginBottom = '30px';
+    nonMobileStyles.minWidth = '140px';
   }
 
   return (
-    <Card style={{ minWidth: '140px', ...nonMobileStyles }}>
+    <Card style={nonMobileStyles}>
       <Card.Header style={{ textAlign: 'center' }}>
         <span style={{ verticalAlign: 'text-top' }}>Pin </span>
         <Badge
@@ -37,7 +38,7 @@ export const Pin = ({ pin, isMobile = false }) => {
           data-clipboard-text={pin}
           ref={pinRef}
         >
-          <span>{pin}</span>
+          {pin}
         </Badge>
         <Overlay target={pinRef.current} show={show} placement="right">
           {props => (

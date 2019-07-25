@@ -57,6 +57,7 @@ export const Poll = ({
       <CenteredRow className="align-items-center" style={{ height: '100%' }}>
         <Info
           isMobile={width < MEDIUM}
+          width={width}
           members={members}
           leader={leader}
           name={name}
