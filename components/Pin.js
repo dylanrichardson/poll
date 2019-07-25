@@ -40,7 +40,7 @@ export const Pin = ({ pin, isMobile = false }) => {
           data-clipboard-text={pin}
           ref={pinRef}
         >
-          {pin}
+          <span style={{ verticalAlign: 'inherit' }}>{pin}</span>
         </Badge>
         <Overlay target={pinRef.current} show={show} placement="right">
           {props => (
