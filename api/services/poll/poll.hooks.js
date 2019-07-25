@@ -3,7 +3,7 @@ const { Conflict, BadRequest } = require('@feathersjs/errors');
 const generate = require('nanoid/generate');
 
 const addId = async context => {
-  context.data = { id: generate('abcdefghijklmnopqrstuvwxyz', 4) };
+  context.data = { id: generate('ABCDEFGHIJKLMNOPQRSTUVWXYZ', 4) };
 
   return context;
 };

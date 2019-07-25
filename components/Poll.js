@@ -1,7 +1,15 @@
 import React from 'react';
 import { Col } from 'react-bootstrap';
 import styled from 'styled-components';
-import { Members, Ask, ToggleResults, Answer, Question, Results } from './';
+import {
+  Members,
+  Ask,
+  ToggleResults,
+  Answer,
+  Question,
+  Results,
+  Pin
+} from './';
 import { PageContainer, CenteredContainer, CenteredRow } from '../styles';
 
 const CenteredCol = styled(Col)`
@@ -31,6 +39,7 @@ export const Poll = ({
     <PageContainer verticalPadding="5vh">
       <CenteredRow className="align-items-center" style={{ height: '100%' }}>
         <Col xs={3} xl={2} style={{ zIndex: 1 }}>
+          <Pin pin={pin} />
           <Members members={members} leader={leader} name={name} />
         </Col>
         <CenteredCol>
