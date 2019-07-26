@@ -12,6 +12,8 @@ export const Pin = ({ pin, isMobile = false }) => {
       setShow(true);
       setTimeout(() => setShow(false), 2000);
     });
+
+    return () => clipboard && clipboard.destroy();
   });
 
   const pinRef = useRef(null);
