@@ -58,7 +58,17 @@ export const Answer = ({
           </InputGroup.Append>
         </InputGroup>
       </CenteredRow>
-      {ownAnswer && <CenteredRow>Your answer: {ownAnswer}</CenteredRow>}
+      {ownAnswer && (
+        <CenteredRow
+          style={{
+            wordBreak: 'break-word',
+            paddingLeft: '20%',
+            paddingRight: '20%'
+          }}
+        >
+          Your answer: {ownAnswer}
+        </CenteredRow>
+      )}
     </>
   ) : (
     !isLeader && (

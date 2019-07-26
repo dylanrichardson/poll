@@ -35,9 +35,7 @@ const PollPage = ({ pin }) => {
 
     poll.on('patched', mergeState);
 
-    return () => {
-      poll.removeListener('patched');
-    };
+    return () => poll.removeListener('patched');
   });
 
   const handleJoin = ({ name, leader }) => {
