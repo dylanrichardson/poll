@@ -5,8 +5,8 @@ import Head from 'next/head';
 import { LoadingApp, LoadingPage } from '../components';
 
 const PollUI = class extends App {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       loadingPage: true,

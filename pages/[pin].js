@@ -1,58 +1,60 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import Router from 'next/router';
 import client from '../utils/feathers';
-import { NameInput, Poll } from '../components';
+import { NameInput, Poll, LoadingPage } from '../components';
 
 const poll = client.service('poll');
 
-const validatePin = async pin => {
-  try {
-    await poll.get(pin);
-  } catch (err) {
-    Router.push('/');
-  }
-};
+const PollPage = ({ pin }) => {
+  const [state, setState] = useState({
+    pin,
+    name: null,
+    leader: null,
+    members: [],
+    question: null,
+    answers: {},
+    showResults: false
+  });
+  const [loading, setLoading] = useState(true);
 
-export default class extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      pin: props.pin,
-      name: null,
-      leader: null,
-      members: [],
-      question: null,
-      answers: {},
-      showResults: false
-    };
-  }
-
-  static async getInitialProps({ req, query: { pin } }) {
-    if (!req) {
-      await validatePin(pin);
-    }
-
-    return { pin };
-  }
-
-  async componentDidMount() {
-    await validatePin(this.state.pin);
-
-    poll.on('patched', this.setState.bind(this));
-  }
-
-  handleJoin = ({ name, leader }) => {
-    this.setState({ name, leader });
+  const mergeState = newState => {
+    return setState(oldState => ({ ...oldState, ...newState }));
   };
 
-  render() {
-    const { name, pin } = this.state;
+  const validatePin = async () => {
+    try {
+      await poll.get(pin);
+      setLoading(false);
+    } catch (e) {
+      Router.push('/');
+    }
+  };
 
-    return name ? (
-      <Poll {...this.state} />
-    ) : (
-      <NameInput onJoin={this.handleJoin} pin={pin} />
-    );
-  }
-}
+  useEffect(() => {
+    validatePin();
+
+    poll.on('patched', mergeState);
+
+    return () => {
+      poll.removeListener('patched');
+    };
+  });
+
+  const handleJoin = ({ name, leader }) => {
+    mergeState({ name, leader });
+  };
+
+  return loading ? (
+    <LoadingPage />
+  ) : state.name ? (
+    <Poll {...state} />
+  ) : (
+    <NameInput onJoin={handleJoin} pin={pin} />
+  );
+};
+
+PollPage.getInitialProps = ({ query: { pin } }) => {
+  return { pin };
+};
+
+export default PollPage;
