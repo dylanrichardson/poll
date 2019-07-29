@@ -3,23 +3,19 @@ import Router from 'next/router';
 import { Col, Row, Button } from 'react-bootstrap';
 import { Pin, MembersSidebar, MembersModal } from './';
 import { CenteredRow } from '../styles';
-import client from '../utils/feathers';
 
 const span6 = 374;
 const span5 = 466;
 const span4 = 622;
 
-const poll = client.service('poll');
-
-const createPoll = async () => {
-  const { id } = await poll.create({});
-  Router.push(`/${id}`);
-};
-
-const NewPoll = ({ style = { width: '100%', height: '100%' } }) => {
+const Home = ({ style = { width: '100%', height: '100%' } }) => {
   return (
-    <Button style={style} variant="outline-primary" onClick={createPoll}>
-      New Poll
+    <Button
+      style={style}
+      variant="outline-primary"
+      onClick={() => Router.push('/')}
+    >
+      Home
     </Button>
   );
 };
@@ -36,7 +32,7 @@ export const Info = ({ isMobile, width, members, leader, name, pin }) => {
           <Pin pin={pin} isMobile={isMobile} />
         </Col>
         <Col xs={xs} style={{ marginLeft }}>
-          <NewPoll />
+          <Home />
         </Col>
         <Col xs={xs} style={{ paddingRight: '10px', marginLeft }}>
           <MembersModal members={members} leader={leader} name={name} />
@@ -46,7 +42,7 @@ export const Info = ({ isMobile, width, members, leader, name, pin }) => {
       <>
         <Row style={{ marginTop: '-5vh', paddingTop: '10px', width: '100%' }}>
           <Col xs={12}>
-            <NewPoll />
+            <Home />
           </Col>
         </Row>
         <Row style={{ paddingTop: '10px', width: '100%' }}>
@@ -65,7 +61,7 @@ export const Info = ({ isMobile, width, members, leader, name, pin }) => {
   ) : (
     <Col xs={3} xl={2} style={{ zIndex: 1 }}>
       <CenteredRow style={{ marginBottom: '30px' }}>
-        <NewPoll style={{ minWidth: '140px' }} />
+        <Home style={{ minWidth: '140px' }} />
       </CenteredRow>
       <CenteredRow style={{ marginBottom: '30px' }}>
         <Pin pin={pin} style={{ minWidth: '140px' }} />
