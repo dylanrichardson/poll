@@ -28,6 +28,10 @@ export const Results = ({ answers, showResults, width, height }) => {
 
   const labelSizes = _.map(values, ({ x }) => Math.min(200 / x.length, 50));
 
+  const textFill = window.getComputedStyle(
+    document.getElementsByTagName('body')[0]
+  ).color;
+
   return (
     showChart && (
       <CenteredRow>
@@ -53,7 +57,11 @@ export const Results = ({ answers, showResults, width, height }) => {
           )}
 
           .bar {
-            fill: #78C2AD;
+            fill: var(--primary);
+          }
+
+          text {
+            fill: ${textFill};
           }
           `}
         </style>

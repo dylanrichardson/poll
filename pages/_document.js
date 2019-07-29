@@ -71,19 +71,13 @@ export default class extends Document {
           {/* Bootstrap Theme */}
           <link
             rel="stylesheet"
-            href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/minty/bootstrap.min.css"
+            href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/sketchy/bootstrap.min.css"
           />
 
           {/* Icons */}
           <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css"
-          />
-
-          {/* Fonts */}
-          <link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css?family=Chivo:700&display=swap"
           />
 
           {styleTags}
