@@ -44,6 +44,12 @@ export default class extends Document {
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css"
           />
 
+          {/* Fonts */}
+          <link
+            href="https://fonts.googleapis.com/css?family=Chivo:700&display=swap"
+            rel="stylesheet"
+          />
+
           {styleTags}
         </Head>
         <body>

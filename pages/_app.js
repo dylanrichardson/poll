@@ -3,6 +3,7 @@ import App, { Container } from 'next/app';
 import Router from 'next/router';
 import Head from 'next/head';
 import { LoadingApp, LoadingPage } from '../components';
+import { GlobalStyle } from '../styles';
 
 const PollUI = class extends App {
   constructor(props) {
@@ -10,8 +11,7 @@ const PollUI = class extends App {
 
     this.state = {
       loadingPage: true,
-      loadingApp: true,
-      loggedIn: null
+      loadingApp: true
     };
   }
 
@@ -58,6 +58,7 @@ const PollUI = class extends App {
         <Head>
           <title>Poll</title>
         </Head>
+        <GlobalStyle />
         {loadingApp ? (
           <LoadingApp />
         ) : loadingPage ? (
