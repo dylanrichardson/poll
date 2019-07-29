@@ -32,6 +32,42 @@ export default class extends Document {
           />
           <meta name="apple-mobile-web-app-capable" content="yes" />
 
+          {/* Favicon */}
+          <link
+            rel="apple-touch-icon"
+            sizes="180x180"
+            href="/static/apple-touch-icon.png"
+          />
+          <link
+            rel="icon"
+            type="image/png"
+            sizes="32x32"
+            href="/static/favicon-32x32.png"
+          />
+          <link
+            rel="icon"
+            type="image/png"
+            sizes="16x16"
+            href="/static/favicon-16x16.png"
+          />
+
+          <link
+            rel="mask-icon"
+            href="/static/safari-pinned-tab.svg"
+            color="#5bbad5"
+          />
+
+          {/* Manifest */}
+          <link rel="manifest" href="/static/site.webmanifest" />
+          <meta name="msapplication-TileColor" content="#ffffff" />
+          <meta name="theme-color" content="#ffffff" />
+
+          {/* Social Sharing */}
+          <meta property="og:image" content="/static/social.png" />
+          <meta property="og:title" content="Polljob" />
+          <meta property="og:description" content="Realtime polling" />
+          <meta name="twitter:title" content="Polljob" />
+
           <link
             rel="stylesheet"
             href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"

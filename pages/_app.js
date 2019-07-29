@@ -56,7 +56,7 @@ const PollUI = class extends App {
     return (
       <Container>
         <Head>
-          <title>Poll</title>
+          <title>Polljob</title>
         </Head>
         <GlobalStyle />
         {loadingApp ? (
