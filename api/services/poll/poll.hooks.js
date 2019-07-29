@@ -1,6 +1,7 @@
 const { disallow } = require('feathers-hooks-common');
 const { Conflict, BadRequest } = require('@feathersjs/errors');
 const generate = require('nanoid/generate');
+const _ = require('lodash');
 const logger = require('../../logger');
 
 const addId = async context => {
@@ -82,11 +83,17 @@ const joinPoll = async context => {
     params: { connection }
   } = context;
 
-  const { members } = await service.get(poll);
+  const { members, answers } = await service.get(poll);
   const leader = {};
 
   if (members.includes(name)) {
     throw new Conflict('A user with the same name is already in the poll.');
+  }
+
+  if (_.keys(answers).includes(name)) {
+    throw new Conflict(
+      'A user with the same name has already voted in the poll.'
+    );
   }
 
   if (!name || name === '') {
