@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { CenteredRow } from '../styles';
 import { BarChart } from 'react-d3-components';
 import _ from 'lodash';
-import { TextBox } from 'd3plus-text';
 
 const WIDTH_RATIO = 0.6;
 const HEIGHT_RATIO = 0.3;
@@ -26,17 +25,7 @@ export const Results = ({ answers, showResults, width, height }) => {
   const horizontalMargin = chartWidth * 0.1;
   const verticalMargin = chartHeight * 0.05;
 
-  useEffect(() => {
-    if (showChart) {
-      console.log(document.querySelector('g.x.axis > g > text'));
-    }
-  });
-
-  // char : size
-  // 30 : 5
-  // 20 : 10
-  // 10 : 20
-  const labelSize = 20;
+  const labelSizes = _.map(values, ({ x }) => Math.min(200 / x.length, 50));
 
   return (
     showChart && (
@@ -55,13 +44,11 @@ export const Results = ({ answers, showResults, width, height }) => {
           sort={d3.ascending}
         />
         <style>
-          {`g.x.axis text {
-              font-size: ${labelSize}px;
-          
-            }`}
-
-          {/* transform-origin: 25px 50px;
-              transform: rotate(-25deg); */}
+          {labelSizes.map(
+            (size, n) => `g.x.axis g:nth-of-type(${n + 1}) text {
+              font-size: ${size}px;
+            }`
+          )}
         </style>
       </CenteredRow>
     )
