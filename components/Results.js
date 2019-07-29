@@ -46,11 +46,16 @@ export const Results = ({ answers, showResults, width, height }) => {
           sort={d3.ascending}
         />
         <style>
-          {labelSizes.map(
+          {`${labelSizes.map(
             (size, n) => `g.x.axis g:nth-of-type(${n + 1}) text {
               font-size: ${size}px;
             }`
           )}
+
+          .bar {
+            fill: #78C2AD;
+          }
+          `}
         </style>
       </CenteredRow>
     )

@@ -68,13 +68,13 @@ export default class extends Document {
           <meta property="og:description" content="Realtime polling" />
           <meta name="twitter:title" content="Polljob" />
 
+          {/* Bootstrap Theme */}
           <link
             rel="stylesheet"
-            href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-            crossOrigin="anonymous"
+            href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/minty/bootstrap.min.css"
           />
 
+          {/* Icons */}
           <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css"
@@ -82,8 +82,8 @@ export default class extends Document {
 
           {/* Fonts */}
           <link
-            href="https://fonts.googleapis.com/css?family=Chivo:700&display=swap"
             rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Chivo:700&display=swap"
           />
 
           {styleTags}
