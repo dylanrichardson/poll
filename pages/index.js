@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Router from 'next/router';
 import { Button } from 'react-bootstrap';
 import client from '../utils/feathers';

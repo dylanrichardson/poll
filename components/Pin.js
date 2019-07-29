@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Card, Badge, Tooltip, Overlay } from 'react-bootstrap';
 import Clipboard from 'clipboard';
 
-export const Pin = ({ pin, isMobile = false }) => {
+export const Pin = ({ pin, style = {} }) => {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -18,14 +18,8 @@ export const Pin = ({ pin, isMobile = false }) => {
 
   const pinRef = useRef(null);
 
-  const nonMobileStyles = {};
-  if (!isMobile) {
-    nonMobileStyles.marginBottom = '30px';
-    nonMobileStyles.minWidth = '140px';
-  }
-
   return (
-    <Card style={nonMobileStyles}>
+    <Card style={style}>
       <Card.Header
         style={{ textAlign: 'center', paddingLeft: '0px', paddingRight: '0px' }}
       >

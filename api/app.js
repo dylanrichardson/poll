@@ -34,7 +34,11 @@ const createApp = async () => {
   app.configure(
     socketio(io => {
       io.on('connection', socket => {
+        logger.info("before app.on('connection')");
+
         socket.on('disconnect', () => {
+          logger.info("before app.on('disconnect')");
+
           const { name, poll, leader } = socket.feathers;
 
           if (poll && (name || leader)) {

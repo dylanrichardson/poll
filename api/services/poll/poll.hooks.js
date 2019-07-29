@@ -1,6 +1,7 @@
 const { disallow } = require('feathers-hooks-common');
 const { Conflict, BadRequest } = require('@feathersjs/errors');
 const generate = require('nanoid/generate');
+const logger = require('../../logger');
 
 const addId = async context => {
   context.data = { id: generate('ABCDEFGHIJKLMNOPQRSTUVWXYZ', 4) };
@@ -26,22 +27,13 @@ const addEmptyAnswers = async context => {
   return context;
 };
 
-const addPollToLeader = async context => {
-  const {
-    data: { id: poll },
-    params: { connection }
-  } = context;
-
-  Object.assign(connection, { poll });
-
-  return context;
-};
-
 const applyOperation = async context => {
   const {
     data: { operation },
     params
   } = context;
+
+  logger.info(`before app.service('poll').${operation}()`);
 
   Object.assign(params, { operation });
 
@@ -246,13 +238,7 @@ module.exports = {
     all: [disallow('rest')],
     find: [disallow('external')],
     get: [],
-    create: [
-      addId,
-      addEmptyMembers,
-      addEmptyQuestion,
-      addEmptyAnswers,
-      addPollToLeader
-    ],
+    create: [addId, addEmptyMembers, addEmptyQuestion, addEmptyAnswers],
     update: [disallow('external')],
     patch: [applyOperation],
     remove: [disallow('external')]
