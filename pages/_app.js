@@ -4,6 +4,20 @@ import Router from 'next/router';
 import Head from 'next/head';
 import { LoadingApp, LoadingPage } from '../components';
 
+const lockPortrait = async () => {
+  try {
+    if (ScreenOrientation.lock) {
+      ScreenOrientation.lock();
+    } else if (screen.lockOrienation) {
+      screen.lockOrienation('portrait');
+    } else if (screen.orientation.lock) {
+      await screen.orientation.lock('portrait');
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const PollUI = class extends App {
   constructor(props) {
     super(props);
@@ -40,6 +54,8 @@ const PollUI = class extends App {
     Router.events.on('routeChangeError', this.routeChangeError);
 
     this.setState({ loadingPage: false, loadingApp: false });
+
+    await lockPortrait();
   }
 
   componentWillUnmount() {

@@ -2,18 +2,6 @@ import Document, { Head, Main, NextScript } from 'next/document';
 import { ServerStyleSheet } from 'styled-components';
 
 export default class extends Document {
-  componentDidMount() {
-    try {
-      if (ScreenOrientation.lock) {
-        ScreenOrientation.lock();
-      } else if (screen.lockOrienation) {
-        screen.lockOrienation('portrait');
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   static getInitialProps({ renderPage }) {
     // Step 1: Create an instance of ServerStyleSheet
     const sheet = new ServerStyleSheet();
