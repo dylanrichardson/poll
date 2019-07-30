@@ -16,7 +16,7 @@ export const Answer = ({
   isMobile
 }) => {
   useEffect(() => {
-    if (question) {
+    if (question && !isMobile) {
       answerRef.current.focus();
     }
   });

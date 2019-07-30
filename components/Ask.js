@@ -9,7 +9,7 @@ export const Ask = ({ pin, isLeader, isMobile }) => {
   const questionRef = useRef(null);
 
   useEffect(() => {
-    if (isLeader) {
+    if (isLeader && !isMobile) {
       questionRef.current.focus();
     }
   });

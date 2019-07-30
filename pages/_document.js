@@ -2,6 +2,18 @@ import Document, { Head, Main, NextScript } from 'next/document';
 import { ServerStyleSheet } from 'styled-components';
 
 export default class extends Document {
+  componentDidMount() {
+    try {
+      if (ScreenOrientation.lock) {
+        ScreenOrientation.lock();
+      } else if (screen.lockOrienation) {
+        screen.lockOrienation('portrait');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   static getInitialProps({ renderPage }) {
     // Step 1: Create an instance of ServerStyleSheet
     const sheet = new ServerStyleSheet();
@@ -30,7 +42,12 @@ export default class extends Document {
             name="viewport"
             content="user-scalable=no, width=device-width, initial-scale=1.0"
           />
+          <meta httpEquiv="ScreenOrientation" content="autoRotate:disabled" />
           <meta name="apple-mobile-web-app-capable" content="yes" />
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no"
+          />
 
           {/* Favicon */}
           <link
