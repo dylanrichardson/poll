@@ -8,10 +8,11 @@ const MEDIUM = 768;
 const EXTRA_LARGE = 1200;
 
 const CenteredCol = styled(Col)`
-  height: 100%;
+  height: 80%;
 
   @media (min-width: ${MEDIUM}px) {
     margin-left: -25vw;
+    height: 100%;
   }
 
   @media (min-width: ${EXTRA_LARGE}px) {
