@@ -4,9 +4,9 @@ import { Col, Row, Button } from 'react-bootstrap';
 import { Pin, MembersSidebar, MembersModal } from './';
 import { CenteredRow } from '../styles';
 
-const span6 = 374;
-const span5 = 466;
-const span4 = 622;
+const EXTRA_SMALL = 374;
+const SMALL = 466;
+const MEDIUM = 622;
 
 const Home = ({ style = { width: '100%', height: '100%' } }) => {
   return (
@@ -21,7 +21,8 @@ const Home = ({ style = { width: '100%', height: '100%' } }) => {
 };
 
 export const Info = ({ isMobile, width, members, leader, name, pin }) => {
-  const xs = width < span6 ? 6 : width < span5 ? 5 : width < span4 ? 4 : 3;
+  const xs =
+    width < EXTRA_SMALL ? 6 : width < SMALL ? 5 : width < MEDIUM ? 4 : 3;
 
   const marginLeft = `${xs === 3 ? 100 / 8 : 0}%`;
 

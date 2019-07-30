@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Ask, ToggleResults, Answer, Question, Results, Info } from './';
 import { PageContainer, CenteredContainer, CenteredRow } from '../styles';
 
+const SMALL = 466;
 const MEDIUM = 768;
 const EXTRA_LARGE = 1200;
 
@@ -12,6 +13,9 @@ const CenteredCol = styled(Col)`
 
   @media (min-width: ${MEDIUM}px) {
     margin-left: -25vw;
+  }
+
+  @media (min-width: ${SMALL}px) {
     height: 100%;
   }
 
