@@ -193,7 +193,7 @@ const addAnswer = async context => {
 
   const { answers } = await service.get(poll);
 
-  context.data = { answers: { ...answers, [name]: answer } };
+  context.data = { answers: { ...answers, [name]: answer.trim() } };
 
   return context;
 };
