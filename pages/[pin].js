@@ -5,9 +5,10 @@ import { NameInput, Poll, LoadingPage } from '../components';
 
 const poll = client.service('poll');
 
-const PollPage = ({ pin }) => {
+const PollPage = props => {
+  const { pin } = props;
+
   const [state, setState] = useState({
-    pin,
     name: null,
     leader: null,
     members: [],
@@ -45,9 +46,9 @@ const PollPage = ({ pin }) => {
   return loading ? (
     <LoadingPage />
   ) : state.name ? (
-    <Poll {...state} />
+    <Poll {...state} {...props} />
   ) : (
-    <NameInput onJoin={handleJoin} pin={pin} />
+    <NameInput onJoin={handleJoin} {...props} />
   );
 };
 

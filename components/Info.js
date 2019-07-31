@@ -20,7 +20,15 @@ const Home = ({ style = { width: '100%', height: '100%' } }) => {
   );
 };
 
-export const Info = ({ isMobile, width, members, leader, name, pin }) => {
+export const Info = ({
+  isMobile,
+  width,
+  showTitle,
+  members,
+  leader,
+  name,
+  pin
+}) => {
   const xs =
     width < EXTRA_SMALL ? 6 : width < SMALL ? 5 : width < MEDIUM ? 4 : 3;
 
@@ -61,9 +69,11 @@ export const Info = ({ isMobile, width, members, leader, name, pin }) => {
     )
   ) : (
     <Col xs={3} xl={2} style={{ zIndex: 1 }}>
-      <CenteredRow style={{ marginBottom: '30px' }}>
-        <Home style={{ minWidth: '140px' }} />
-      </CenteredRow>
+      {!showTitle && (
+        <CenteredRow style={{ marginBottom: '30px' }}>
+          <Home style={{ minWidth: '140px' }} />
+        </CenteredRow>
+      )}
       <CenteredRow style={{ marginBottom: '30px' }}>
         <Pin pin={pin} style={{ minWidth: '140px' }} />
       </CenteredRow>
