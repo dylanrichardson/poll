@@ -3,7 +3,7 @@
   "description": "Voting app",
   "version": "0.1.0",
   "engines": {
-    "node": "^12.0.0",
+    "node": "^10.15.0",
     "yarn": ">= 0.18.0"
   },
   "main": "api",

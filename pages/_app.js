@@ -1,6 +1,7 @@
 import React from 'react';
 import App, { Container } from 'next/app';
 import Router from 'next/router';
+import Link from 'next/link';
 import Head from 'next/head';
 import { Row, Col } from 'react-bootstrap';
 import { LoadingApp, LoadingPage } from '../components';
@@ -100,10 +101,14 @@ const PollUI = class extends App {
         {showTitle && (
           <Row style={{ position: 'absolute', top: '15px', left: '35px' }}>
             <Col>
-              <h1 className="display-4">
-                <span style={{ color: 'red' }}>Poll</span>
-                <span style={{ fontWeight: 600 }}>job</span>
-              </h1>
+              <Link href="/">
+                <a style={{ textDecoration: 'none' }}>
+                  <h1 className="display-4">
+                    <span style={{ color: 'var(--red)' }}>Poll</span>
+                    <span style={{ fontWeight: 600 }}>job</span>
+                  </h1>
+                </a>
+              </Link>
             </Col>
           </Row>
         )}

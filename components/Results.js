@@ -72,7 +72,7 @@ export const Results = ({ answers, showResults, width, height }) => {
   const [labelLines, setLabelLines] = useState(1);
 
   const values = _.sortBy(
-    Object.entries(_.countBy(Object.values(answers))).map(([x, y]) => ({
+    _.entries(_.countBy(_.values(answers))).map(([x, y]) => ({
       x,
       y
     })),

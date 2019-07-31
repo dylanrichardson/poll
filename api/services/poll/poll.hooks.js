@@ -28,6 +28,12 @@ const addEmptyAnswers = async context => {
   return context;
 };
 
+const addCaseSensitive = async context => {
+  Object.assign(context.data, { caseSensitive: false });
+
+  return context;
+};
+
 const applyOperation = async context => {
   const {
     data: { operation },
@@ -51,6 +57,8 @@ const applyOperation = async context => {
       return toggleResults(context);
     case 'startJoin':
       return startJoin(context);
+    case 'toggleCaseSensitive':
+      return toggleCaseSensitive(context);
     default:
       throw new BadRequest('Patching a poll requires a valid operation.');
   }
@@ -191,9 +199,15 @@ const addAnswer = async context => {
     throw new BadRequest('Answer operation requires an answer.');
   }
 
-  const { answers } = await service.get(poll);
+  const { answers, caseSensitive } = await service.get(poll);
 
-  context.data = { answers: { ...answers, [name]: answer.trim() } };
+  const trimmedAnswer = answer.trim();
+
+  const formattedAnswer = caseSensitive
+    ? trimmedAnswer
+    : trimmedAnswer.toLowerCase();
+
+  context.data = { answers: { ...answers, [name]: formattedAnswer } };
 
   return context;
 };
@@ -225,6 +239,33 @@ const toggleResults = async context => {
   return context;
 };
 
+const toggleCaseSensitive = async context => {
+  const {
+    id: poll,
+    data: { caseSensitive },
+    service,
+    params: {
+      connection: { name }
+    }
+  } = context;
+
+  const { leader } = await service.get(poll);
+
+  if (name !== leader) {
+    throw new Forbidden('Toggle case sensitive operation requires the leader.');
+  }
+
+  if (caseSensitive === null || caseSensitive === undefined) {
+    throw new BadRequest(
+      'Toggle case sensitive operation requires a caseSensitive parameter.'
+    );
+  }
+
+  context.data = { caseSensitive };
+
+  return context;
+};
+
 const removePoll = async context => {
   const {
     id: poll,
@@ -245,7 +286,13 @@ module.exports = {
     all: [disallow('rest')],
     find: [disallow('external')],
     get: [],
-    create: [addId, addEmptyMembers, addEmptyQuestion, addEmptyAnswers],
+    create: [
+      addId,
+      addEmptyMembers,
+      addEmptyQuestion,
+      addEmptyAnswers,
+      addCaseSensitive
+    ],
     update: [disallow('external')],
     patch: [applyOperation],
     remove: [disallow('external')]

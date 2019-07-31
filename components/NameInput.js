@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Router from 'next/router';
-import { Button, InputGroup, FormControl, Alert } from 'react-bootstrap';
+import { InputGroup, FormControl, Alert } from 'react-bootstrap';
 import client from '../utils/feathers';
-import { CenteredRow, PageContainer } from '../styles';
+import { CenteredRow, PageContainer, InputButton } from '../styles';
 
 const poll = client.service('poll');
 
@@ -57,12 +57,11 @@ export const NameInput = ({ pin, onJoin }) => {
             aria-label="Your Name"
             ref={nameRef}
             onKeyDown={handleName}
+            style={{
+              paddingBottom: '2px'
+            }}
           />
-          <InputGroup.Append>
-            <Button variant="outline-primary" onClick={handleJoin}>
-              Enter
-            </Button>
-          </InputGroup.Append>
+          <InputButton onClick={handleJoin}>Join</InputButton>
         </InputGroup>
       </CenteredRow>
       {error && (

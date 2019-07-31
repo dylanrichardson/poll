@@ -1,7 +1,7 @@
 import React, { useEffect, createRef } from 'react';
-import { Button, InputGroup, FormControl, Spinner } from 'react-bootstrap';
+import { InputGroup, FormControl, Spinner } from 'react-bootstrap';
 import client from '../utils/feathers';
-import { CenteredRow } from '../styles';
+import { CenteredRow, InputButton } from '../styles';
 
 const poll = client.service('poll');
 
@@ -46,16 +46,11 @@ export const Answer = ({
             aria-label="Your Answer"
             ref={answerRef}
             onKeyDown={handleKey}
+            style={{
+              paddingBottom: '2px'
+            }}
           />
-          <InputGroup.Append>
-            <Button
-              variant="outline-primary"
-              onClick={handleAnswer}
-              style={{ width: '80px' }}
-            >
-              Answer
-            </Button>
-          </InputGroup.Append>
+          <InputButton onClick={handleAnswer}>Vote</InputButton>
         </InputGroup>
       </CenteredRow>
       {ownAnswer && (
@@ -66,7 +61,7 @@ export const Answer = ({
             paddingRight: '20%'
           }}
         >
-          Your answer: {ownAnswer}
+          Your vote: {ownAnswer}
         </CenteredRow>
       )}
     </>
