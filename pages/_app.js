@@ -99,7 +99,14 @@ const PollUI = class extends App {
           <title>Polljob</title>
         </Head>
         {showTitle && (
-          <Row style={{ position: 'absolute', top: '15px', left: '35px' }}>
+          <Row
+            style={{
+              position: 'absolute',
+              top: '15px',
+              left: '35px',
+              zIndex: '1'
+            }}
+          >
             <Col>
               <Link href="/">
                 <a style={{ textDecoration: 'none' }}>
