@@ -6,8 +6,8 @@ import Head from 'next/head';
 import { Row, Col } from 'react-bootstrap';
 import { LoadingApp, LoadingPage } from '../components';
 
-const TITLE_MIN_HEIGHT = 440;
 const TITLE_MIN_WIDTH = 830;
+const TITLE_MIN_HEIGHT = 440;
 
 const lockPortrait = async () => {
   try {
@@ -32,7 +32,7 @@ const PollUI = class extends App {
       loadingApp: true,
       width: props.width,
       height: props.height,
-      showTitle: true
+      showTitle: false
     };
   }
 
@@ -41,8 +41,8 @@ const PollUI = class extends App {
       pageProps: Component.getInitialProps
         ? await Component.getInitialProps(ctx)
         : {},
-      width: (!ctx.req && window.innerWidth) || 1000,
-      height: (!ctx.req && window.innerHeight) || 700
+      width: (!ctx.req && window.innerWidth) || TITLE_MIN_WIDTH,
+      height: (!ctx.req && window.innerHeight) || TITLE_MIN_HEIGHT
     };
   }
 
