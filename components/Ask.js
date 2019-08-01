@@ -65,7 +65,9 @@ export const Ask = ({ pin, isLeader, isMobile }) => {
               paddingRight: '3px',
               lineHeight: '18px',
               cursor: 'pointer',
-              border: `1px solid var(--${caseSensitive ? 'red' : 'white'})`
+              border: `1px solid ${
+                caseSensitive ? 'var(--red)' : 'rgba(0,0,0,0)'
+              }`
             }}
           >
             Aa
